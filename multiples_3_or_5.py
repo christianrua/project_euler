@@ -59,4 +59,23 @@ def max_factor(num):
         return num
     return factor
 
-print(max_factor(13195))
+#print(max_factor(13195))
+
+"""
+A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
+Find the largest palindrome made from the product of two 3-digit numbers.
+"""
+from itertools import permutations, combinations
+
+def found_palindromic():
+    comb = combinations(list(range(100)),2)
+    max = 0
+    for pairs in comb:
+        product = pairs[0] * pairs[1]   
+        if str(product) == str(product)[::-1]:
+            max = product
+    return max        
+
+print(found_palindromic())
+
+
