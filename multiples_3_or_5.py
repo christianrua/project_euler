@@ -62,7 +62,7 @@ def max_factor(num):
 #print(max_factor(13195))
 
 """
-A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
+4. A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
 Find the largest palindrome made from the product of two 3-digit numbers.
 """
 from itertools import permutations, combinations
@@ -76,6 +76,39 @@ def found_palindromic():
             max = product
     return max        
 
-print(found_palindromic())
+#print(found_palindromic())
+
+"""
+2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
+What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
+"""
+#my version
+def smallest_multiple():
+    smallest_number = 1
+    while True:
+        for i in range(1,21):
+            print(smallest_number % i, i, smallest_number)
+            if smallest_number % i == 0:
+                if i == 20:
+                    return smallest_number
+                else:
+                    continue    
+            else:
+                break    
+        
+        smallest_number += 1
+
+#print(smallest_multiple())
+#version find it on stack overflow
+import functools
+import math
+
+def smallest_multiple_best():
+    return functools.reduce(lambda x,y: x*y//math.gcd(x, y), range(1, 21))
+
+print(smallest_multiple_best())
+
+
+
 
 
