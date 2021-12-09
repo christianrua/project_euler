@@ -79,7 +79,7 @@ def found_palindromic():
 #print(found_palindromic())
 
 """
-2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
+5. 2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
 What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
 """
 #my version
@@ -109,7 +109,7 @@ def smallest_multiple_best():
 #print(smallest_multiple_best())
 
 """
-The sum of the squares of the first ten natural numbers is,
+6. The sum of the squares of the first ten natural numbers is,
 1^2 + 2^2 + ... + 10^2 = 385
 The square of the sum of the first ten natural numbers is,
 (1 + 2 + ... + 10)^2 = 55^2 = 3025
