@@ -106,8 +106,23 @@ import math
 def smallest_multiple_best():
     return functools.reduce(lambda x,y: x*y//math.gcd(x, y), range(1, 21))
 
-print(smallest_multiple_best())
+#print(smallest_multiple_best())
 
+"""
+The sum of the squares of the first ten natural numbers is,
+1^2 + 2^2 + ... + 10^2 = 385
+The square of the sum of the first ten natural numbers is,
+(1 + 2 + ... + 10)^2 = 55^2 = 3025
+Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is $3025 - 385 = 2640$.
+Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.
+"""
+
+def difference_sum_squares_and_square_sum(num_range):
+    sum_squares = sum(list(map(lambda x: x*x,range(num_range))))
+    square_sum = sum(list(range(num_range))) * sum(list(range(num_range)))
+    return square_sum - sum_squares 
+
+print(difference_sum_squares_and_square_sum(101))
 
 
 
