@@ -92,12 +92,14 @@ class GridMatrixFunctions:
     def __init__(self, text_grid):
         self._text_grid = text_grid
 
-    def _sum_of_rows(self, matrix):
+    def sum_of_rows(self, matrix, max_value):
+        #please use this same for loop to do the column and the traversal check
+        #that because, this is a most efficient way of doinh it
         """
             This function sums all the elements for a row
         """
         max_value_dict = {
-            "max_value":0,
+            "max_value":max_value,
             "list_of_numbers_max_value":[]
         }
         
@@ -106,7 +108,12 @@ class GridMatrixFunctions:
                 max_value_dict["max_value"] = sum(matrix[row][0])
                 max_value_dict["list_of_numbers_max_value"] = matrix[row][0]
 
+
+
         return max_value_dict
+
+    def sum_all_columns(self):
+        pass    
                 
 
     def parse_matrix(self):
@@ -132,6 +139,7 @@ def largest_product_in_a_grid(grid):
     grid_helper = GridMatrixFunctions(grid)
     matrix_20_by_20 = grid_helper.parse_matrix()
     biggest_product = 0
+    max_sum_rows_value = 0
     #print(matrix_20_by_20)
     #the next step is to traverse the matrix by row.
     for row in range(0,len(matrix_20_by_20),4):
@@ -141,7 +149,7 @@ def largest_product_in_a_grid(grid):
         row4 = matrix_20_by_20[row + 3]
 
         for column in range(0, len(matrix_20_by_20)):
-            if column + 4 == len(matrix_20_by_20):
+            if column + 3 == len(matrix_20_by_20):
                 break
             
             local_matrix = [
@@ -150,8 +158,12 @@ def largest_product_in_a_grid(grid):
                             [row3[column:column+4]],
                             [row4[column:column+4]]
                             ]
+            #this is the part where you find the max value, when sum up all the rows                
+            local_max_row_value = grid_helper.sum_of_rows(local_matrix,max_sum_rows_value)
+            max_sum_rows_value = local_max_row_value["max_value"]
+            print(local_max_row_value)  
 
-            print(grid_helper.matrix_operations(local_matrix))                
+    print(f"the max sum value is {max_sum_rows_value}")                  
 
 
 
