@@ -86,45 +86,63 @@ The product of these numbers is 26 × 63 × 78 × 14 = 1788696.
 What is the greatest product of four adjacent numbers in the same direction (up, down, left, right, or diagonally) in the 20×20 grid?
 
 """
+import math
 
 class GridMatrixFunctions:
 
     def __init__(self, text_grid):
         self._text_grid = text_grid
 
-    def sum_of_rows(self, matrix, max_value):
+    def prod_of_rows(self, matrix, max_value_dict):
         """
             This function sums all the elements for a row
         """
-        max_value_dict = {
-            "sum_max_value":max_value,
-            "list_of_numbers_max_value":[]
-        }
-        
+
         for iterator in range(0,len(matrix)):
-            if sum(matrix[iterator][0]) > max_value_dict["sum_max_value"]:
-                max_value_dict["sum_max_value"] = sum(matrix[iterator][0])
+            if math.prod(matrix[iterator][0]) > max_value_dict["prod_max_value"]:
+                max_value_dict["prod_max_value"] = math.prod(matrix[iterator][0]) #sum(matrix[iterator][0])
                 max_value_dict["list_of_numbers_max_value"] = matrix[iterator][0]
 
         return max_value_dict
 
-    def sum_columns_values(self, matrix, max_value):
+    def prod_of_columns(self, matrix, max_value_dict):
         """
             This function is for sum all values inside each column
         """
-        max_value_dict = {
-            "sum_max_value":max_value,
-            "list_of_numbers_max_value":[]
-        }
 
         for iterator in range(0, len(matrix)):
             col_list = [matrix[0][0][iterator],matrix[1][0][iterator],matrix[2][0][iterator],matrix[3][0][iterator]]
-            col_list_sum_value = sum(col_list)
-            if col_list_sum_value > max_value_dict["sum_max_value"]:
-                max_value_dict["sum_max_value"] = col_list_sum_value
+            col_list_sum_value = math.prod(col_list)
+            if col_list_sum_value > max_value_dict["prod_max_value"]:
+                max_value_dict["prod_max_value"] = col_list_sum_value
                 max_value_dict["list_of_numbers_max_value"] =  col_list
 
         return max_value_dict        
+
+    def prod_diagonally_cols(self, matrix, max_value_dict):
+        
+        max_value = max_value_dict["prod_max_value"]
+        right_diagonally = [matrix[0][0][0],matrix[1][0][1],matrix[2][0][2],matrix[3][0][3]]
+        left_diagonally = [matrix[0][0][3],matrix[1][0][2],matrix[2][0][1],matrix[3][0][0]]
+
+        max_value_left = math.prod(left_diagonally)
+        max_value_right = math.prod(right_diagonally)
+
+        if max_value_left > max_value_right and max_value_left > max_value:
+            max_value_dict = {
+                "prod_max_value":max_value_left,
+                "list_of_numbers_max_value":left_diagonally
+            }
+            return max_value_dict
+        elif max_value_right > max_value_left and max_value_right > max_value:
+            max_value_dict = {
+                "prod_max_value":max_value_right,
+                "list_of_numbers_max_value":right_diagonally
+            }
+            return max_value_dict    
+        else:
+            return max_value_dict     
+
 
     def parse_matrix(self):
         """
@@ -141,7 +159,7 @@ class GridMatrixFunctions:
         """
             This function is used to apply all the different operations in the received matrix
         """
-        sum_value = self._sum_of_rows(matrix)
+        sum_value = self._prod_of_rows(matrix)
         return sum_value
 
 def largest_product_in_a_grid(grid):
@@ -149,7 +167,21 @@ def largest_product_in_a_grid(grid):
     grid_helper = GridMatrixFunctions(grid)
     matrix_20_by_20 = grid_helper.parse_matrix()
     biggest_product = 0
-    max_sum_rows_value = 0
+
+    max_prod_rows_value = {
+                "prod_max_value":0,
+                "list_of_numbers_max_value":[]
+            }
+
+    max_prod_cols_value = {
+                "prod_max_value":0,
+                "list_of_numbers_max_value":[]
+            }
+
+    max_prod_diagnolity_value = {
+                "prod_max_value":0,
+                "list_of_numbers_max_value":[]
+            }
     #print(matrix_20_by_20)
     #the next step is to traverse the matrix by row.
     for row in range(0,len(matrix_20_by_20),4):
@@ -158,6 +190,7 @@ def largest_product_in_a_grid(grid):
         row3 = matrix_20_by_20[row + 2]
         row4 = matrix_20_by_20[row + 3]
 
+        print("iter---------------------")    
         for column in range(0, len(matrix_20_by_20)):
             if column + 3 == len(matrix_20_by_20):
                 break
@@ -168,31 +201,24 @@ def largest_product_in_a_grid(grid):
                             [row3[column:column+4]],
                             [row4[column:column+4]]
                             ]
-            #this is the part where you find the max value, when sum up all the rows                
+            #this is the part where you find the max value, when do prod on all the rows                
+            print("*******************************")
+            local_max_row_value = grid_helper.prod_of_rows(local_matrix,max_prod_rows_value)
+            max_prod_rows_value = local_max_row_value 
+            print("rows prod value",local_max_row_value)  
+
             
-            local_max_row_value = grid_helper.sum_of_rows(local_matrix,max_sum_rows_value)
-            max_sum_rows_value = local_max_row_value["sum_max_value"]
-            print("rows sum value",local_max_row_value)  
+            local_max_colum_value = grid_helper.prod_of_columns(local_matrix,max_prod_cols_value)
+            max_prod_cols_value = local_max_colum_value
+            print("columns prod value",local_max_colum_value)  
 
-            print("-----------------------------------")
-            local_max_colum_value = grid_helper.sum_columns_values(local_matrix,max_sum_rows_value)
-            max_sum_columns_value = local_max_colum_value["sum_max_value"]
-            print("columns sum value",local_max_colum_value)  
+            
+            local_max_diagnolaty_value = grid_helper.prod_diagonally_cols(local_matrix,max_prod_diagnolity_value)
+            max_prod_diagnolity_value = local_max_diagnolaty_value
+            print("diagnolaty_prod value",local_max_diagnolaty_value)  
+            print("********************************")
 
-
-
-    print(f"the max sum value is {max_sum_rows_value}")                  
-
-
-
-
-    
-
-
-
-
-    
-
+                 
 
 largest_product_in_a_grid("08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08\
                             49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00\
