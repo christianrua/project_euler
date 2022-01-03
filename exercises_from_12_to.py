@@ -24,3 +24,52 @@ What is the value of the first triangle number to have over five hundred divisor
 
 this is the pattern 1, 1 + 2, 1 + 2 + 3, 1 + 2 + 3 + 4,  and so on.
 """
+import math
+#My try
+def triangle_number_generator(max_num_of_divisors,num_of_divisors = 0, sum_counter = 1 ,numbers_list = [1]):
+    """
+        this function is to generate the triangle numbers
+        qty: quantity of numbers to be generated
+    """
+    if num_of_divisors > max_num_of_divisors:
+        return numbers_list[-1]
+    else:
+        #numbers_list.append(sum(list(range(1, sum_counter+1))))
+        numbers_list.append(numbers_list[-1] + sum_counter+1)
+        actual_triangle_number = numbers_list[-1]
+        print("actual_triangle_number: ", actual_triangle_number)
+        num_of_divisors = len([div for div in range(1, int(math.sqrt(actual_triangle_number)) + 1) if actual_triangle_number % div == 0]) 
+        print("num_of_divisors: ", num_of_divisors)
+        triangle_number_generator(max_num_of_divisors,num_of_divisors,sum_counter + 1, numbers_list)
+    
+    return numbers_list[-1]
+
+#print(triangle_number_generator(500))            
+
+import math
+import time
+import functools
+ 
+def factors(n):
+    """Returns a set of all the factors of a triangle number (n)."""
+    return set(functools.reduce(list.__add__, ([i, n//i] for i in range(1, int(math.sqrt(n)) + 1) if n % i == 0)))
+     
+def triangle_number_generator_other(number_of_divisors):
+    """Main program"""
+    #start_time = time.clock()
+    counter = 0         # Initialise counter for natural numbers
+    TriangleNumber = 0  # Initialise triangle number variable
+    switch = True       # Switch for while loop
+    while switch == True:
+        counter += 1
+        TriangleNumber += counter               # Get the current triangle number.
+        if len(factors(TriangleNumber)) > number_of_divisors:  # Find all the factors of TriangleNumber, 
+            switch = False                      # if greater than 500 stop the while loop
+    print(TriangleNumber)                       # and print the last triangle number.
+    #run_time = time.clock() - start_time
+    #print("Run time = ", run_time)
+
+print(triangle_number_generator_other(500))
+
+
+        
